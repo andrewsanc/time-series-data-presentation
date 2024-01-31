@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FormData } from "./lib/types";
 import { DataTable } from "./components/ui/data-table";
 import { columns } from "./components/ui/columns";
+import { SimpleLineChart } from "@/components/ui/simple-line-chart";
 
 export default function App() {
   const [data, setData] = useState<any | null>(null);
@@ -20,11 +21,12 @@ export default function App() {
 
       return {
         time,
-        value,
+        value: value === "" ? "0" : value,
       };
     });
-    // The last element within the array empty, so pop() it from our data array
-    processedData.pop();
+    // Not sure if we need to filter values that don't have a value
+    // I didn't due to us maybe needing to display potential signal dropoffs?
+    // .filter(({ value }) => value !== "");
 
     setData(processedData);
   }
@@ -39,7 +41,8 @@ export default function App() {
           </p>
         </div>
       ) : (
-        <div className='my-10'>
+        <div className='flex flex-col gap-20 my-10'>
+          <SimpleLineChart data={data} />
           <DataTable columns={columns} data={data} />
         </div>
       )}
