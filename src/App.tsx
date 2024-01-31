@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
+import { DatePickerForm } from "@/components/ui/datepicker";
 
 export default function App() {
   return (
-    <>
-      <div>
-        <Button>Hello World</Button>
-      </div>
-    </>
+    <div className='flex flex-col m-10'>
+      <DatePickerForm />
+    </div>
   );
 }
