@@ -1,12 +1,12 @@
 import { DatePickerForm } from "@/components/ui/datepicker";
-import { useState } from "react";
-import { FormData } from "./lib/types";
-import { DataTable } from "./components/ui/data-table";
-import { columns } from "./components/ui/columns";
+import { useMemo, useState } from "react";
+import { FormData } from "@/lib/types";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "@/components/ui/columns";
 import { SimpleLineChart } from "@/components/ui/simple-line-chart";
 
 export default function App() {
-  const [data, setData] = useState<any | null>(null);
+  const [data, setData] = useState<string | null>(null);
 
   async function handleOnFormSubmit(data: FormData) {
     const { begin, end } = data;
@@ -16,20 +16,22 @@ export default function App() {
     });
 
     const responseDataText = await response.text();
-    const processedData = responseDataText.split("\n").map((data) => {
+    setData(responseDataText);
+  }
+
+  const processedData = useMemo(() => {
+    return data?.split("\n").map((data) => {
       const [time, value] = data.split(" ");
+      // Not sure if we need to filter values that don't have a value
+      // I didn't due to us maybe needing to display potential signal dropoffs?
+      // .filter(({ value }) => value !== "");
 
       return {
         time,
         value: value === "" ? "0" : value,
       };
     });
-    // Not sure if we need to filter values that don't have a value
-    // I didn't due to us maybe needing to display potential signal dropoffs?
-    // .filter(({ value }) => value !== "");
-
-    setData(processedData);
-  }
+  }, [data]);
 
   return (
     <div className='flex flex-col m-10'>
@@ -42,8 +44,8 @@ export default function App() {
         </div>
       ) : (
         <div className='flex flex-col gap-20 my-10'>
-          <SimpleLineChart data={data} />
-          <DataTable columns={columns} data={data} />
+          <SimpleLineChart data={processedData ?? []} />
+          <DataTable columns={columns} data={processedData ?? []} />
         </div>
       )}
     </div>
