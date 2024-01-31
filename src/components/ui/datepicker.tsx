@@ -20,6 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { FormData } from "@/lib/types";
 
 const FormSchema = z.object({
   date: z.date({
@@ -27,10 +28,13 @@ const FormSchema = z.object({
   }),
 });
 
-interface DatePickerProps {}
+interface DatePickerProps {
+  handleOnFormSubmit: (data: FormData) => void;
+}
 
 export function DatePickerForm(props: DatePickerProps) {
-  const {} = props;
+  const { handleOnFormSubmit } = props;
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -42,14 +46,14 @@ export function DatePickerForm(props: DatePickerProps) {
     if (selectedDate instanceof Date && !isNaN(selectedDate.getTime())) {
       // Set beginning and end date intervals
       const begin = format(selectedDate, "yyyy-MM-dd") + "T00:00:00Z";
-      const end = format(selectedDate, "yyyy-MM-dd") + "T23:59.59Z";
+      const end = format(selectedDate, "yyyy-MM-dd") + "T23:59:59Z";
 
       const newData = {
         begin,
         end,
       };
 
-      console.log(JSON.stringify(newData, null, 2));
+      handleOnFormSubmit(newData);
     } else {
       alert("Invalid date selected");
     }
@@ -94,7 +98,6 @@ export function DatePickerForm(props: DatePickerProps) {
                   />
                 </PopoverContent>
               </Popover>
-              <FormDescription>Select a date</FormDescription>
               <FormMessage />
             </FormItem>
           )}
