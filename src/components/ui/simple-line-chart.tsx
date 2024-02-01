@@ -37,6 +37,7 @@ export function SimpleLineChart(props: LineChartProps) {
   );
 }
 
+// Used type 'any' as escape hatch for unknown props given from the XAxis component
 function CustomizedAxisTick(props: any) {
   const { x, y, payload } = props;
 
