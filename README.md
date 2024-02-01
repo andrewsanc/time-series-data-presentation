@@ -1,30 +1,14 @@
-# React + TypeScript + Vite
+# MODE Time Series Data Presentation App
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b9d8dad4-044b-40cc-96c7-72262ca5557c/deploy-status)](https://app.netlify.com/sites/storied-sprite-9ff266/deploys)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application that retrieves data from an API and renders the data using two data views. A live version of the app can be reached [here](https://storied-sprite-9ff266.netlify.app/)
 
-Currently, two official plugins are available:
+# Tools used
+- Shadcn
+- Tailwind
+- React Router
+- Recharts (LineGraph)
+- Netlify
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+# Considerations
+- More thought into error handling. Currently, errors are being displayed through an Alert(). Ideally, errors could be shown through a Toast component.
