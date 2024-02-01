@@ -52,9 +52,11 @@ export default function App() {
     const begin = searchParams.get("begin");
     const end = searchParams.get("end");
 
-    // Make network request with given parameters
+    // Make network request with given parameters, otherwise setData to be null
     if (begin && end) {
       fetchDataFromApi({ begin, end });
+    } else {
+      setData(null);
     }
   }, [location.search]);
 

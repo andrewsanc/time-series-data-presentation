@@ -22,9 +22,11 @@ import {
 import { useEffect } from "react";
 
 const FormSchema = z.object({
-  date: z.date({
-    required_error: "A date is required",
-  }),
+  date: z
+    .date({
+      required_error: "A date is required",
+    })
+    .optional(),
 });
 
 export function DatePickerForm() {
@@ -55,13 +57,13 @@ export function DatePickerForm() {
     // Parse the query parameters from the url
     const searchParams = new URLSearchParams(location.search);
     const end = searchParams.get("end");
-    const date = end ? new Date(end) : null;
+    const date = end ? new Date(end) : undefined;
 
     // If date can be derived from the params, update our datepicker form
     if (FormSchema.safeParse({ date }).success) {
-      form.setValue("date", date!);
+      form.setValue("date", date);
     } else {
-      return;
+      form.setValue("date", undefined);
     }
   }, [location.search, form]);
 
