@@ -7,7 +7,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
 } from "recharts";
 
 interface LineChartProps {
@@ -21,13 +20,12 @@ export function SimpleLineChart(props: LineChartProps) {
   const { data } = props;
 
   return (
-    <ResponsiveContainer width='100%' height='100%' aspect={3}>
-      <LineChart width={500} height={300} data={data}>
-        <CartesianGrid strokeDasharray='3 3' />
+    <ResponsiveContainer width='100%' height='100%' maxHeight={400} aspect={3}>
+      <LineChart data={data}>
+        <CartesianGrid strokeDasharray='4 4' />
         <XAxis dataKey='time' tick={<CustomizedAxisTick />} />
         <YAxis />
         <Tooltip />
-        <Legend />
         <Line
           type='monotone'
           dataKey='value'
@@ -48,14 +46,7 @@ function CustomizedAxisTick(props: any) {
 
   return (
     <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor='end'
-        fill='#666'
-        transform='rotate(-35)'
-      >
+      <text x={0} y={0} dy={16} textAnchor='middle' fill='#666'>
         {time ?? ""}
       </text>
     </g>

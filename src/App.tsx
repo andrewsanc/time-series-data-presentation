@@ -20,17 +20,21 @@ export default function App() {
   }
 
   const processedData = useMemo(() => {
-    return data?.split("\n").map((data) => {
-      const [time, value] = data.split(" ");
-      // Not sure if we need to filter values that don't have a value
-      // I didn't due to us maybe needing to display potential signal dropoffs?
-      // .filter(({ value }) => value !== "");
+    return data
+      ?.split("\n")
+      .map((data) => {
+        const [time, value] = data.split(" ");
 
-      return {
-        time,
-        value: value === "" ? "0" : value,
-      };
-    });
+        // Not sure if we need to filter values that don't have a value
+        // I didn't due to us maybe needing to display potential signal dropoffs?
+        // .filter(({ value }) => value !== "");
+
+        return {
+          time,
+          value: value === "" ? "0" : value,
+        };
+      })
+      .filter(({ value }) => value !== undefined);
   }, [data]);
 
   return (
