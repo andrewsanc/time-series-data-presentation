@@ -2,8 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
+import { date, z } from "zod";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -19,7 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { FormData } from "@/lib/types";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
   date: z.date({
@@ -27,12 +27,9 @@ const FormSchema = z.object({
   }),
 });
 
-interface DatePickerProps {
-  handleOnFormSubmit: (data: FormData) => void;
-}
-
-export function DatePickerForm(props: DatePickerProps) {
-  const { handleOnFormSubmit } = props;
+export function DatePickerForm() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,17 +43,27 @@ export function DatePickerForm(props: DatePickerProps) {
       // Set beginning and end date intervals
       const begin = format(selectedDate, "yyyy-MM-dd") + "T00:00:00Z";
       const end = format(selectedDate, "yyyy-MM-dd") + "T23:59:59Z";
+      const url = `/data?begin=${begin}&end=${end}`;
 
-      const newData = {
-        begin,
-        end,
-      };
-
-      handleOnFormSubmit(newData);
+      navigate(url);
     } else {
       alert("Invalid date selected");
     }
   }
+
+  useEffect(() => {
+    // Parse the query parameters from the url
+    const searchParams = new URLSearchParams(location.search);
+    const end = searchParams.get("end");
+    const date = end ? new Date(end) : null;
+
+    // If date can be derived from the params, update our datepicker form
+    if (FormSchema.safeParse({ date }).success) {
+      form.setValue("date", date!);
+    } else {
+      return;
+    }
+  }, [location.search, form]);
 
   return (
     <Form {...form}>
